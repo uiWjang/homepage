@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>로그인 · 회원가입</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="card">
+    <div class="logo" aria-hidden="true">✦</div>
+    <h1 id="heading">다시 만나서 반가워요</h1>
+    <p class="subtitle">계정으로 로그인하고 시작해 보세요.</p>
+
+    <div class="switch" aria-label="화면 선택">
+      <button type="button" class="active" id="login-button" aria-pressed="true">로그인</button>
+      <button type="button" id="signup-button" aria-pressed="false">회원가입</button>
+    </div>
+
+    <form id="auth-form">
+      <div id="name-field" hidden>
+        <label for="name">이름</label>
+        <input id="name" name="name" type="text" autocomplete="name" placeholder="홍길동" disabled>
+      </div>
+      <div>
+        <label for="email">이메일</label>
+        <input id="email" name="email" type="email" autocomplete="username" placeholder="hello@example.com" required>
+      </div>
+      <div>
+        <label for="password">비밀번호</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" placeholder="비밀번호를 입력하세요" required>
+      </div>
+      <div id="confirm-field" hidden>
+        <label for="confirm-password">비밀번호 확인</label>
+        <input id="confirm-password" name="confirm-password" type="password" autocomplete="new-password" placeholder="비밀번호를 다시 입력하세요" disabled>
+      </div>
+      <button class="submit" type="submit">로그인</button>
+      <p id="message" role="status"></p>
+    </form>
+    <p class="notice">화면 미리보기입니다. 실제 계정 생성과 로그인은 서버 연결이 필요합니다.</p>
+  </main>
+
+  <script>
+    const form = document.querySelector('#auth-form');
+    const loginButton = document.querySelector('#login-button');
+    const signupButton = document.querySelector('#signup-button');
+    const password = document.querySelector('#password');
+    const confirmation = document.querySelector('#confirm-password');
+    const message = document.querySelector('#message');
+    let isSignup = false;
+
+    function setMode(signup) {
+      isSignup = signup;
+      form.reset();
+      message.textContent = '';
+      confirmation.setCustomValidity('');
+      loginButton.classList.toggle('active', !signup);
+      signupButton.classList.toggle('active', signup);
+      loginButton.setAttribute('aria-pressed', String(!signup));
+      signupButton.setAttribute('aria-pressed', String(signup));
+      document.querySelector('#heading').textContent = signup ? '처음 오셨나요?' : '다시 만나서 반가워요';
+      document.querySelector('.subtitle').textContent = signup ? '간단한 정보 입력으로 시작해 보세요.' : '계정으로 로그인하고 시작해 보세요.';
+      document.querySelector('.submit').textContent = signup ? '회원가입' : '로그인';
+      for (const id of ['name-field', 'confirm-field']) {
+        const field = document.getElementById(id);
+        field.hidden = !signup;
+        field.querySelector('input').disabled = !signup;
+        field.querySelector('input').required = signup;
+      }
+      password.autocomplete = signup ? 'new-password' : 'current-password';
+      password.minLength = signup ? 8 : 1;
+      password.placeholder = signup ? '8자 이상 입력하세요' : '비밀번호를 입력하세요';
+    }
+
+    loginButton.addEventListener('click', () => setMode(false));
+    signupButton.addEventListener('click', () => setMode(true));
+    function checkPasswords() {
+      confirmation.setCustomValidity(isSignup && password.value !== confirmation.value ? '비밀번호가 일치하지 않습니다.' : '');
+    }
+    password.addEventListener('input', checkPasswords);
+    confirmation.addEventListener('input', checkPasswords);
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      message.textContent = '입력 확인이 완료되었습니다. 실제 ' + (isSignup ? '회원가입' : '로그인') + '을 위해 서버를 연결해 주세요.';
+    });
+  </script>
+</body>
+</html>
