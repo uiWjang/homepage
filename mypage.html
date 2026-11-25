@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <main class="profile-page">
+  <p class="eyebrow">MY PAGE · SUPABASE PROFILE</p>
+  <article class="profile-view" aria-labelledby="profile-title">
+    <p id="profile-status" class="profile-badge">프로필을 불러오는 중</p>
+    <h1 id="profile-title">내 자기소개 페이지</h1>
+    <p id="profile-email"></p>
+    <section class="profile-introduction">
+      <h2 id="profile-name">표시 이름</h2>
+      <p id="profile-text">저장한 자기소개를 불러옵니다.</p>
+    </section>
+    <a href="index.html">프로필 수정</a>
+    <button id="mypage-logout" type="button">로그아웃</button>
+  </article>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script src="mypage.js"></script>
+</body>
+</html>
